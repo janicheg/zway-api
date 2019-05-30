@@ -34,34 +34,13 @@ class Client
         $this->password = $password;
         $this->httpClient = $httpClient ?: new HttpClient;
     }
-
-    /**
-     * @param $command
-     * @return mixed
-     * @throws BadResponseException
-     */
-    public function run($command)
-    {
-        $response = $this->request("Run/{$command}");
-
-        if ($response->getStatusCode() == 200) {
-            $data = json_decode($response->getBody()->getContents(), true);
-            if ($data === null) {
-                throw new \RuntimeException('Cannot decode API response');
-            }
-
-            return $data;
-        } else {
-            throw new BadResponseException($response);
-        }
-    }
-
     /**
      * @param $path
      * @return \Psr\Http\Message\ResponseInterface
      */
     protected function request($path)
     {
+        echo "{$this->baseUrl}/{$path}";
         return $this->httpClient->get(
             "{$this->baseUrl}/{$path}",
             [
@@ -88,6 +67,25 @@ class Client
     }
 
     /**
+     * @param $command
+     * @return mixed
+     * @throws BadResponseException
+     */
+    public function run($command)
+    {
+        $response = $this->request("Run/{$command}");
+
+        if ($response->getStatusCode() == 200) {
+            $data = json_decode($response->getBody()->getContents(), true);
+
+            return $data;
+        } else {
+            throw new BadResponseException($response);
+        }
+    }
+
+
+    /**
      * @return array
      * @throws BadResponseException
      */
@@ -97,16 +95,15 @@ class Client
 
         if ($response->getStatusCode() == 200) {
             $data = json_decode($response->getBody(), true);
-            if ($data === null) {
-                throw new \RuntimeException('Cannot decode API response');
-            }
-
             $jobs = [];
 
-            $jobFactory = new Factory\QueueJobFactory;
+            if ($data !== null) {
 
-            foreach ($data as $jobData) {
-                $jobs[] = $jobFactory->create($jobData);
+                $jobFactory = new Factory\QueueJobFactory;
+
+                foreach ($data as $jobData) {
+                    $jobs[] = $jobFactory->create($jobData);
+                }
             }
 
             return $jobs;
