@@ -1,0 +1,24 @@
+{
+    "name": "janicheg/zway-api",
+    "description": "Implementation of the Z-Way JSON API",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jan Kurbanov",
+            "email": "jan@kurbanov.me"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "guzzlehttp/guzzle": "~6.0",
+        "zendframework/zend-hydrator": "^2.0",
+        "ext-json": "^1.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "ZWayApi\\": [
+                "src/"
+            ]
+        }
+    }
+}
