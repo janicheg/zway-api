@@ -6,7 +6,6 @@ class DownstopCommand extends BaseDeviceCommand
 {
     public function downstop()
     {
-        $this->endpoint = $this->endpoint . '/downstop';
-        return $this;
+        return $this->send($this->endpoint . '/downstop');
     }
 }

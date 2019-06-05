@@ -6,7 +6,6 @@ class DownstartCommand extends BaseDeviceCommand
 {
     public function downstart()
     {
-        $this->endpoint = $this->endpoint . '/downstart';
-        return $this;
+        return $this->send($this->endpoint . '/downstart');
     }
 }

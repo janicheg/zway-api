@@ -4,29 +4,23 @@ namespace ZWay\Resources;
 
 use ZWay\Api\ApiService;
 use ZWay\Responses\Response;
-use ZWay\Responses\StatusResponse;
 use ZWay\ResponseTransformer;
 
 abstract class BaseResource
 {
-    /** @var ApiService */
-    private $api;
-
     protected $endpoint;
     protected $hidden = ['api'];
     protected $responseType;
     protected $transformer;
     protected $transformerType;
+    /** @var ApiService */
+    protected $api;
 
-    public function __construct()
-    {
-        $this->transformer = new ResponseTransformer();
-        $this->transformerType = str_replace('Resource', 'Response', get_class($this));
-    }
-
-    public function setApi(ApiService $api)
+    public function __construct(ApiService $api)
     {
         $this->api = $api;
+        $this->transformer = new ResponseTransformer();
+        $this->transformerType = str_replace('Resource', 'Response', get_class($this));
     }
 
     /**

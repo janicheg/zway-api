@@ -6,7 +6,6 @@ class UpstopCommand extends BaseDeviceCommand
 {
     public function upstop()
     {
-        $this->endpoint = $this->endpoint . '/upstop';
-        return $this;
+        return $this->send($this->endpoint . '/upstop');
     }
 }

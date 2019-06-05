@@ -10,9 +10,7 @@ class Thermostat extends SwitchBinary
 
     public function setTemperature(int $temperature)
     {
-        $command = new ExactCommand($this->id);
-        $command->setApi($this->api);
-        $command->set($temperature);
-        return $command->send();
+        $command = new ExactCommand($this->id, $this->api);
+        return $command->set($temperature);
     }
 }

@@ -6,7 +6,6 @@ class OpenCommand extends BaseDeviceCommand
 {
     public function open()
     {
-        $this->endpoint = $this->endpoint . '/open';
-        return $this;
+        return $this->send($this->endpoint . '/open');
     }
 }

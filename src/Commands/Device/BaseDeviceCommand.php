@@ -9,10 +9,10 @@ class BaseDeviceCommand extends BaseCommand
     protected $id;
     protected $endpoint = '/ZAutomation/api/v1/devices';
 
-    public function __construct($id)
+    public function __construct($id, $api)
     {
         $this->id = $id;
         $this->endpoint = $this->endpoint . '/' . $id . '/command';
-        parent::__construct();
+        parent::__construct($api);
     }
 }

@@ -6,7 +6,6 @@ class CloseCommand extends BaseDeviceCommand
 {
     public function close()
     {
-        $this->endpoint = $this->endpoint . '/close';
-        return $this;
+        return $this->send($this->endpoint . '/close');
     }
 }

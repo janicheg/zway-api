@@ -6,7 +6,6 @@ class OffCommand extends BaseDeviceCommand
 {
     public function off()
     {
-        $this->endpoint = $this->endpoint . '/off';
-        return $this;
+        return $this->send($this->endpoint . '/off');
     }
 }

@@ -6,7 +6,6 @@ class UpstartCommand extends BaseDeviceCommand
 {
     public function upstart()
     {
-        $this->endpoint = $this->endpoint . '/upstart';
-        return $this;
+        return $this->send($this->endpoint . '/upstart');
     }
 }

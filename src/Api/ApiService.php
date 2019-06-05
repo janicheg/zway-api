@@ -4,11 +4,11 @@ namespace ZWay\Api;
 
 class ApiService
 {
-    private $host;
-    private $protocol;
-    private $port;
-    private $username;
-    private $password;
+    protected $host;
+    protected $protocol;
+    protected $port;
+    protected $username;
+    protected $password;
 
     public function __construct($host, $port, $protocol, $username, $password)
     {
@@ -18,6 +18,7 @@ class ApiService
         $this->username = $username;
         $this->password = $password;
     }
+
     /**
      * @param $host
      */
@@ -48,7 +49,7 @@ class ApiService
 
         $c = curl_init();
         curl_setopt($c, CURLOPT_URL, $url);
-        curl_setopt($c, CURLOPT_USERPWD,  $this->username . ':' . $this->password);
+        curl_setopt($c, CURLOPT_USERPWD, $this->username . ':' . $this->password);
         curl_setopt($c, CURLOPT_HEADER, false);
         curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
@@ -62,7 +63,7 @@ class ApiService
      *
      * @return string
      */
-    private function getUrl(string $endpoint): string
+    protected function getUrl(string $endpoint): string
     {
         return $this->protocol . '://' . $this->host . ':' . $this->port . $endpoint;
     }

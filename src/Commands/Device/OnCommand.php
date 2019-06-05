@@ -6,7 +6,6 @@ class OnCommand extends BaseDeviceCommand
 {
     public function on()
     {
-        $this->endpoint = $this->endpoint . '/on';
-        return $this;
+        return $this->send($this->endpoint . '/on');
     }
 }
