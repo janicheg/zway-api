@@ -17,7 +17,7 @@ class ZwayServer
 {
     /** @var ApiService */
     protected $api;
-    
+
     /** @var BaseDevice[] */
     protected $devices;
     /** @var string|null */
@@ -30,6 +30,9 @@ class ZwayServer
 
     public function getDevice(\stdClass $data): BaseDevice
     {
+        if (!isset($data->deviceType)) {
+            throw new \BadMethodCallException('data must include deviceType string');
+        }
         switch ($data->deviceType) {
             case Thermostat::TYPE_NAME:
                 $device = new Thermostat($data);
@@ -57,7 +60,9 @@ class ZwayServer
                 break;
         }
         $device->setApi($this->api);
-        $device->setMetrics($data->metrics);
+        if (isset($data->metrics)) {
+            $device->setMetrics($data->metrics);
+        }
 
         return $device;
     }
@@ -68,7 +73,7 @@ class ZwayServer
             $this->deviceSince = $since;
         }
         $resource = new DevicesResource($this->api, $this->deviceSince);
-        $response = $resource->send($command)->getContent();
+        $response = $resource->send()->getContent();
         if ($response->code === 200) {
             $data = $response->data;
             $this->deviceSince = $data->updateTime;
@@ -78,7 +83,7 @@ class ZwayServer
                 }
             }
         }
-        
+
         return $this->devices;
     }
 }
