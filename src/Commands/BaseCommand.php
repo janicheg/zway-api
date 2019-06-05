@@ -10,9 +10,9 @@ use ZWay\ResponseTransformer;
 abstract class BaseCommand
 {
     /** @var ApiService */
-    private $api;
+    protected $api;
 
-    protected $endpoint = '/ZAutomation/api/v1/devices';
+    protected $endpoint;
     protected $hidden = ['api'];
     protected $responseType;
     protected $transformer;
