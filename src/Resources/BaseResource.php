@@ -9,6 +9,7 @@ use ZWay\ResponseTransformer;
 
 abstract class BaseResource
 {
+    /** @var ApiService */
     private $api;
 
     protected $endpoint;
@@ -19,9 +20,13 @@ abstract class BaseResource
 
     public function __construct()
     {
-        $this->api = new ApiService();
         $this->transformer = new ResponseTransformer();
         $this->transformerType = str_replace('Resource', 'Response', get_class($this));
+    }
+
+    public function setApi(ApiService $api)
+    {
+        $this->api = $api;
     }
 
     /**

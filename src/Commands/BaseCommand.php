@@ -9,6 +9,7 @@ use ZWay\ResponseTransformer;
 
 abstract class BaseCommand
 {
+    /** @var ApiService */
     private $api;
 
     protected $endpoint = '/ZAutomation/api/v1/devices';
@@ -17,12 +18,15 @@ abstract class BaseCommand
     protected $transformer;
     protected $transformerType;
 
-
-    public function __construct(ApiService $api)
+    public function __construct()
     {
-        $this->api = $api;
         $this->transformer = new ResponseTransformer();
         $this->transformerType = str_replace('Command', 'Response', get_class($this));
+    }
+
+    public function setApi(ApiService $api)
+    {
+        $this->api = $api;
     }
 
     /**
