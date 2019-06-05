@@ -6,25 +6,16 @@ use function PHPSTORM_META\type;
 
 class ToggleButtonCommand extends BaseCommand
 {
-    protected $endpoint = '/ZAutomation/api/v1/devices';
-
-    public function __construct($id)
+    public function on(string $id)
     {
-        $this->endpoint = $this->endpoint . '/' . $id . '/command';
-
-        parent::__construct();
-    }
-
-    public function on()
-    {
-        $this->endpoint = $this->endpoint . '/on';
+        $this->endpoint = $this->endpoint  . '/' . $id . '/command' . '/on';
 
         return $this;
     }
 
-    public function off()
+    public function off(string $id)
     {
-        $this->endpoint = $this->endpoint . '/off';
+        $this->endpoint = $this->endpoint . '/' . $id . '/command' . '/off';
 
         return $this;
     }

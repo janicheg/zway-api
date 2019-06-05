@@ -11,15 +11,16 @@ abstract class BaseCommand
 {
     private $api;
 
-    protected $endpoint;
+    protected $endpoint = '/ZAutomation/api/v1/devices';
     protected $hidden = ['api'];
     protected $responseType;
     protected $transformer;
     protected $transformerType;
 
-    public function __construct()
+
+    public function __construct(ApiService $api)
     {
-        $this->api = new ApiService();
+        $this->api = $api;
         $this->transformer = new ResponseTransformer();
         $this->transformerType = str_replace('Command', 'Response', get_class($this));
     }
