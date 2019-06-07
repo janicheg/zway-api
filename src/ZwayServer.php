@@ -7,6 +7,7 @@ use ZWay\Devices\BaseDevice;
 use ZWay\Devices\DoorLock;
 use ZWay\Devices\SensorBinary;
 use ZWay\Devices\SensorMultilevel;
+use ZWay\Devices\SwitchBinary;
 use ZWay\Devices\SwitchControl;
 use ZWay\Devices\SwitchRGB;
 use ZWay\Devices\Thermostat;
@@ -42,6 +43,9 @@ class ZwayServer
                 break;
             case SensorBinary::TYPE_NAME:
                 $device = new SensorBinary($data);
+                break;
+            case SwitchBinary::TYPE_NAME:
+                $device = new SwitchBinary($data);
                 break;
             case SensorMultilevel::TYPE_NAME:
                 $device = new SensorMultilevel($data);
