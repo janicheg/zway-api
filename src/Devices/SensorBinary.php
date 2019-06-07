@@ -10,10 +10,8 @@ class SensorBinary extends BaseDevice
 
     public function update()
     {
-        $command = new UpdateCommand($this->id);
-        $command->setApi($this->api);
-        $command->update();
-        return $command->send();
+        $command = new UpdateCommand($this->id, $this->api);
+        return $command->update();
     }
 
 }

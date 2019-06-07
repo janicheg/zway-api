@@ -10,9 +10,7 @@ class ToggleButton extends BaseDevice
 
     public function turnOn()
     {
-        $command = new OnCommand($this->id);
-        $command->setApi($this->api);
-        $command->on();
-        return $command->send();
+        $command = new OnCommand($this->id, $this->api);
+        return $command->on();
     }
 }

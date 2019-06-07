@@ -11,18 +11,14 @@ class DoorLock extends BaseDevice
 
     public function open()
     {
-        $command = new OpenCommand($this->id);
-        $command->setApi($this->api);
-        $command->open();
-        return $command->send();
+        $command = new OpenCommand($this->id, $this->api);
+        return $command->open();
     }
 
     public function close()
     {
-        $command = new CloseCommand($this->id);
-        $command->setApi($this->api);
-        $command->close();
-        return $command->send();
+        $command = new CloseCommand($this->id, $this->api);
+        return $command->close();
     }
 
 }

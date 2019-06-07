@@ -10,9 +10,7 @@ class SwitchRGB extends SwitchBinary
 
     public function setTemperature(int $red, int $green, int $blue)
     {
-        $command = new ExactRGBCommand($this->id);
-        $command->setApi($this->api);
-        $command->set($red, $green, $blue);
-        return $command->send();
+        $command = new ExactRGBCommand($this->id, $this->api);
+        return $command->set($red, $green, $blue);
     }
 }

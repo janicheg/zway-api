@@ -11,17 +11,13 @@ class SwitchBinary extends BaseDevice
 
     public function turnOn()
     {
-        $command = new OnCommand($this->id);
-        $command->setApi($this->api);
-        $command->on();
-        return $command->send();
+        $command = new OnCommand($this->id, $this->api);
+        return $command->on();
     }
 
     public function turnOff()
     {
-        $command = new OffCommand($this->id);
-        $command->setApi($this->api);
-        $command->off();
-        return $command->send();
+        $command = new OffCommand($this->id, $this->api);
+        return $command->off();
     }
 }
