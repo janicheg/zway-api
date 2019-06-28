@@ -2,7 +2,7 @@
 
 namespace ZWay\Responses;
 
-class IncludeResponse extends BaseResponse
+class Data extends BaseResponse
 {
     public function handle()
     {

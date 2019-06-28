@@ -90,4 +90,9 @@ class ZwayServer
 
         return $this->devices;
     }
+    
+    public function getApi()
+    {
+        return $this->api;
+    }
 }

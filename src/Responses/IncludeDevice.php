@@ -2,7 +2,7 @@
 
 namespace ZWay\Responses;
 
-class RemoveResponse extends BaseResponse
+class IncludeDevice extends BaseResponse
 {
     public function handle()
     {
