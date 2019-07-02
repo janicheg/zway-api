@@ -46,4 +46,15 @@ abstract class BaseCommand
         return $this->transformer->setResponse($response)->transform($this->transformerType);
     }
 
+    /**
+     * @param $path
+     * @return Response
+     */
+    public function sendPath($path)
+    {
+        $response = $this->api->get($this->endpoint . $path);
+
+        return $this->transformer->setResponse($response)->transform($this->transformerType);
+    }
+
 }
