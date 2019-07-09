@@ -9,19 +9,19 @@ namespace ZWay\Devices;
 class Metrics
 {
     use CloneTrait;
-    
+
     /** @var string|null */
-    protected $probeTitle;
+    public $probeTitle;
     /** @var string|null */
-    protected $scaleTitle;
+    public $scaleTitle;
     /** @var string|null */
-    protected $level;
+    public $level;
     /** @var string|null */
-    protected $icon;
+    public $icon;
     /** @var string|null */
-    protected $title;
+    public $title;
     /** @var string|null */
-    protected $text;
+    public $text;
 
     /**
      * Metrics constructor.

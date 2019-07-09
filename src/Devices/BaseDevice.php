@@ -8,7 +8,7 @@ use ZWay\ResponseTransformer;
 class BaseDevice
 {
     use CloneTrait;
-    
+
     /** @var ApiService */
     protected $api;
     protected $endpoint;
@@ -18,27 +18,27 @@ class BaseDevice
     protected $transformerType;
 
     /** @var string */
-    protected $id;
+    public $id;
     /** @var string */
-    protected $deviceType;
+    public $deviceType;
     /** @var integer */
-    protected $updateTime;
+    public $updateTime;
     /** @var Metrics */
-    protected $metrics;
+    public $metrics;
     /** @var integer */
-    protected $creationTime;
+    public $creationTime;
     /** @var integer */
-    protected $creatorId;
+    public $creatorId;
     /** @var boolean */
-    protected $hasHistory;
+    public $hasHistory;
     /** @var boolean */
-    protected $permanently_hidden;
+    public $permanently_hidden;
     /** @var string */
-    protected $probeType;
+    public $probeType;
     /** @var boolean */
-    protected $visibility;
+    public $visibility;
     /** @var array */
-    protected $tags = [];
+    public $tags = [];
 
     public function __construct(\stdClass $data)
     {
@@ -139,7 +139,7 @@ class BaseDevice
     {
         return $this->tags;
     }
-    
+
     public function setMetrics(\stdClass $metricData)
     {
         $this->metrics = new Metrics($metricData);
