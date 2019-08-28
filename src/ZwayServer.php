@@ -24,9 +24,9 @@ class ZwayServer
     /** @var string|null */
     protected $deviceSince;
 
-    public function __construct($host, $port, $protocol, $username, $password)
+    public function __construct($id, $username, $password, $cookiePath = '')
     {
-        $this->api = new ApiService($host, $port, $protocol, $username, $password);
+        $this->api = new ApiService($id, $username, $password, $cookiePath);
     }
 
     public function getDevice(\stdClass $data): BaseDevice

@@ -11,17 +11,17 @@ class Metrics
     use CloneTrait;
 
     /** @var string|null */
-    public $probeTitle;
+    protected $probeTitle;
     /** @var string|null */
-    public $scaleTitle;
+    protected $scaleTitle;
     /** @var string|null */
-    public $level;
+    protected $level;
     /** @var string|null */
-    public $icon;
+    protected $icon;
     /** @var string|null */
-    public $title;
+    protected $title;
     /** @var string|null */
-    public $text;
+    protected $text;
 
     /**
      * Metrics constructor.

@@ -4,59 +4,83 @@ namespace ZWay\Api;
 
 class ApiService
 {
-    protected $host;
-    protected $protocol;
-    protected $port;
+    protected $id;
     protected $username;
     protected $password;
+    protected $cookiePath;
 
-    public function __construct($host, $port, $protocol, $username, $password)
+    public function __construct($id, $username, $password, $cookiePath)
     {
-        $this->host = $host;
-        $this->port = $port;
-        $this->protocol = $protocol;
+        $this->id = $id;
         $this->username = $username;
         $this->password = $password;
+        $this->cookiePath = $cookiePath;
     }
 
     /**
-     * @param $host
+     * @param mixed $id
      */
-    public function setHost($host)
+    public function setId($id): void
     {
-        $this->host = $host;
-    }
-
-    /**
-     * @param $port
-     */
-    public function setPort($port)
-    {
-        $this->port = $port;
-    }
-
-    /**
-     * @param $protocol
-     */
-    public function setProtocol($protocol)
-    {
-        $this->protocol = $protocol;
+        $this->id = $id;
     }
 
     public function get(string $endpoint)
     {
+        $cookie_file_path = $this->getCookie();
+        
         $url = $this->getUrl($endpoint);
 
-        $c = curl_init();
-        curl_setopt($c, CURLOPT_URL, $url);
-        curl_setopt($c, CURLOPT_USERPWD, $this->username . ':' . $this->password);
-        curl_setopt($c, CURLOPT_HEADER, false);
-        curl_setopt($c, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($c, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($c);
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
+        curl_setopt($ch, CURLOPT_HEADER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $response = curl_exec($ch);
 
         return json_decode($response);
     }
+
+    protected function getCookie()
+    {
+        $cookieFile =  $this->getCookieFileName();
+        if (!file_exists($cookieFile)) {
+            $this->login();
+        }
+        if (!file_exists($cookieFile)) {
+            throw new \Exception('cannot login');
+        }
+
+        return $cookieFile;
+    }
+
+    protected function login()
+    {
+        $username = $this->id . '/' . $this->username;
+        $cookieFile = $this->getCookieFileName();
+        $postinfo = "act=login&login=$username&pass=$this->password";
+
+        $ch = curl_init();
+        $url = $this->getUrl('/zboxweb');
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
+        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
+
+        curl_exec($ch);
+    }
+
+    protected function getCookieFileName()
+    {
+        return $this->cookiePath . '/' .$this->id . '_cookie';
+    }
+
 
     /**
      * @param string $endpoint
@@ -65,6 +89,6 @@ class ApiService
      */
     protected function getUrl(string $endpoint): string
     {
-        return $this->protocol . '://' . $this->host . ':' . $this->port . $endpoint;
+        return 'https://find.z-wave.me' . $endpoint;
     }
 }

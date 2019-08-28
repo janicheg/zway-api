@@ -18,27 +18,27 @@ class BaseDevice
     protected $transformerType;
 
     /** @var string */
-    public $id;
+    protected $id;
     /** @var string */
-    public $deviceType;
+    protected $deviceType;
     /** @var integer */
-    public $updateTime;
+    protected $updateTime;
     /** @var Metrics */
-    public $metrics;
+    protected $metrics;
     /** @var integer */
-    public $creationTime;
+    protected $creationTime;
     /** @var integer */
-    public $creatorId;
+    protected $creatorId;
     /** @var boolean */
-    public $hasHistory;
+    protected $hasHistory;
     /** @var boolean */
-    public $permanently_hidden;
+    protected $permanently_hidden;
     /** @var string */
-    public $probeType;
+    protected $probeType;
     /** @var boolean */
-    public $visibility;
+    protected $visibility;
     /** @var array */
-    public $tags = [];
+    protected $tags = [];
 
     public function __construct(\stdClass $data)
     {
@@ -139,7 +139,7 @@ class BaseDevice
     {
         return $this->tags;
     }
-
+    
     public function setMetrics(\stdClass $metricData)
     {
         $this->metrics = new Metrics($metricData);
