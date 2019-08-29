@@ -9,7 +9,8 @@ class Notifications extends BaseCommand
 
     public function get($since)
     {
-        $this->endpoint = $this->endpoint . '/notifications?since=' . $since;
-        return $this;
+        return $this->send(
+            $this->endpoint = $this->endpoint . '/notifications?since=' . $since
+        );
     }
 }
