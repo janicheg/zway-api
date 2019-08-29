@@ -25,6 +25,11 @@ class ApiService
         $this->id = $id;
     }
 
+    /**
+     * @param string $endpoint
+     * @return mixed
+     * @throws \Exception
+     */
     public function get(string $endpoint)
     {
         $cookie_file_path = $this->getCookie();
@@ -38,9 +43,19 @@ class ApiService
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = curl_exec($ch);
+        $response = json_decode(curl_exec($ch));
 
-        return json_decode($response);
+        if (is_null($response)) {
+            $this->login();
+            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
+            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
+            $response = json_decode(curl_exec($ch));
+            if (is_null($response)) {
+                throw new \Exception(sprintf('cannot handle response %s', $url));
+            }
+        }
+
+        return $response;
     }
 
     protected function getCookie()
@@ -60,6 +75,7 @@ class ApiService
     {
         $username = $this->id . '/' . $this->username;
         $cookieFile = $this->getCookieFileName();
+        unlink($cookieFile);
         $postinfo = "act=login&login=$username&pass=$this->password";
 
         $ch = curl_init();
