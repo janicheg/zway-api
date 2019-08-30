@@ -58,12 +58,9 @@ class ApiService
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             $response = curl_exec($ch);
             $json = json_decode($response);
-            if (is_null($json)) {
-                throw new \Exception(sprintf('cannot handle response %s', $url));
-            }
         }
 
-        return $response;
+        return $json;
     }
 
     protected function getCookie()
