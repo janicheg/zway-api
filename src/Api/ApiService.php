@@ -43,14 +43,22 @@ class ApiService
         curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        $response = json_decode(curl_exec($ch));
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        $response = curl_exec($ch);
+        $json = json_decode($response);
 
-        if (is_null($response)) {
+        if (is_null($json)) {
             $this->login();
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
             curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
-            $response = json_decode(curl_exec($ch));
-            if (is_null($response)) {
+            curl_setopt($ch, CURLOPT_HEADER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            $response = curl_exec($ch);
+            $json = json_decode($response);
+            if (is_null($json)) {
                 throw new \Exception(sprintf('cannot handle response %s', $url));
             }
         }
@@ -75,7 +83,9 @@ class ApiService
     {
         $username = $this->id . '/' . $this->username;
         $cookieFile = $this->getCookieFileName();
-        unlink($cookieFile);
+        if (file_exists($cookieFile)) {
+            unlink($cookieFile);
+        }
         $postinfo = "act=login&login=$username&pass=$this->password";
 
         $ch = curl_init();
