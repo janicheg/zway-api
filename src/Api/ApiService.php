@@ -33,7 +33,7 @@ class ApiService
     public function get(string $endpoint)
     {
         $cookie_file_path = $this->getCookie();
-        
+
         $url = $this->getUrl($endpoint);
 
         $ch = curl_init();
@@ -45,9 +45,10 @@ class ApiService
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         $response = curl_exec($ch);
+        $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $json = json_decode($response);
 
-        if (is_null($json)) {
+        if ($code == 401) {
             $this->login();
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
