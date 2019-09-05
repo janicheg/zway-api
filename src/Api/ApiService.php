@@ -47,8 +47,7 @@ class ApiService
         $response = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $json = json_decode($response);
-
-        if ($code == 401) {
+        if ($code == 401 || (strlen($response) > 500 && !is_object($json))) {
             $this->login();
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, $url);
