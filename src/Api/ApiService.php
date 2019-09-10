@@ -76,7 +76,7 @@ class ApiService
         return $cookieFile;
     }
 
-    protected function login()
+    public function login()
     {
         $username = $this->id . '/' . $this->username;
         $cookieFile = $this->getCookieFileName();
@@ -99,7 +99,7 @@ class ApiService
         curl_exec($ch);
     }
 
-    protected function getCookieFileName()
+    public function getCookieFileName()
     {
         return $this->cookiePath . '/' .$this->id . '_cookie';
     }
