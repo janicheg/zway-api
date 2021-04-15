@@ -4,25 +4,30 @@ namespace ZWay\Api;
 
 class ApiService
 {
-    protected $id;
-    protected $username;
-    protected $password;
-    protected $cookiePath;
+    protected $access_token;
+    protected $clientId;
+    protected $clientSecret;
 
-    public function __construct($id, $username, $password, $cookiePath)
+    public function __construct($clientId, $clientSecret)
     {
-        $this->id = $id;
-        $this->username = $username;
-        $this->password = $password;
-        $this->cookiePath = $cookiePath;
+        $this->clientId = $clientId;
+        $this->clientSecret = $clientSecret;
     }
 
     /**
-     * @param mixed $id
+     * @param string $token
      */
-    public function setId($id): void
+    public function setToken($token): void
     {
-        $this->id = $id;
+        $this->token = $token;
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->token;
     }
 
     /**
@@ -39,69 +44,46 @@ class ApiService
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
 
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type:application/json',
+            'Authentication: Bearer ' . $this->access_token
+        ]);
         $response = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $json = json_decode($response);
         if ($code == 401 || (strlen($response) > 500 && !is_object($json))) {
-            $this->login();
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_COOKIEJAR, $cookie_file_path);
-            curl_setopt($ch, CURLOPT_COOKIEFILE, $cookie_file_path);
-            curl_setopt($ch, CURLOPT_HEADER, false);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-            $response = curl_exec($ch);
-            $json = json_decode($response);
+            throw new \Exception('z-way auth faled');
         }
 
         return $json;
     }
 
-    protected function getCookie()
+    public function auth($code): void
     {
-        $cookieFile =  $this->getCookieFileName();
-        if (!file_exists($cookieFile)) {
-            $this->login();
-        }
-        if (!file_exists($cookieFile)) {
-            throw new \Exception('cannot login');
-        }
-
-        return $cookieFile;
-    }
-
-    public function login()
-    {
-        $username = $this->id . '/' . $this->username;
-        $cookieFile = $this->getCookieFileName();
-        if (file_exists($cookieFile)) {
-            unlink($cookieFile);
-        }
-        $postinfo = "act=login&login=$username&pass=$this->password";
+        $postinfo = json_encode([
+            "client_id" => $this->clientId,
+            "client_secret" => $this->clientSecret,
+            "code" => $code
+        ]);
 
         $ch = curl_init();
-        $url = $this->getUrl('/zboxweb');
+        $url = $this->getUrl('/token');
 
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_COOKIEJAR, $cookieFile);
-        curl_setopt($ch, CURLOPT_COOKIEFILE, $cookieFile);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $postinfo);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type:application/json']);
 
-        curl_exec($ch);
-    }
-
-    public function getCookieFileName()
-    {
-        return $this->cookiePath . '/' .$this->id . '_cookie';
+        $response = curl_exec($ch);
+        $json = json_decode($response);
+        if (isset($json->access_token, $this->token_type) && $this->token_type =='bearer') {
+            $this->access_token = $json->access_token;
+        }
     }
 
 

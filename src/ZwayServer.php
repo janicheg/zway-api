@@ -24,10 +24,26 @@ class ZwayServer
     /** @var string|null */
     protected $deviceSince;
 
-    public function __construct($id, $username, $password, $cookiePath = '')
+    public function __construct($clientId, $clientSecret)
     {
-        $this->api = new ApiService($id, $username, $password, $cookiePath);
+        $this->api = new ApiService($clientId, $clientSecret);
     }
+
+    /**
+     * @param string $token
+     */
+    public function setToken($token): void
+    {
+        $this->api->setToken($token);
+    }
+
+    /**
+     * @return string
+     */
+    public function getToken(): string
+    {
+        return $this->api->getToken();
+    } 
 
     public function getDevice(\stdClass $data): BaseDevice
     {
