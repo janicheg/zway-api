@@ -70,7 +70,7 @@ class ApiService
         ]);
 
         $ch = curl_init();
-        $url = $this->getUrl('/token');
+        $url ='https://oauth.z-wave.me/token';
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
@@ -81,7 +81,7 @@ class ApiService
 
         $response = curl_exec($ch);
         $json = json_decode($response);
-        if (isset($json->access_token, $this->token_type) && $this->token_type =='bearer') {
+        if (isset($json->access_token, $this->token_type) && $this->token_type == 'bearer') {
             $this->access_token = $json->access_token;
         } else {
             throw new \Exception('z-way auth faled: ' . $response);
