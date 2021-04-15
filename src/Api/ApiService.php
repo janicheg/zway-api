@@ -19,7 +19,7 @@ class ApiService
      */
     public function setToken($token): void
     {
-        $this->token = $token;
+        $this->access_token = $token;
     }
 
     /**
@@ -27,7 +27,7 @@ class ApiService
      */
     public function getToken(): string
     {
-        return $this->token;
+        return $this->access_token;
     }
 
     /**
