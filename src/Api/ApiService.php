@@ -83,6 +83,8 @@ class ApiService
         $json = json_decode($response);
         if (isset($json->access_token, $this->token_type) && $this->token_type =='bearer') {
             $this->access_token = $json->access_token;
+        } else {
+            throw new \Exception('z-way auth faled: ' . $response);
         }
     }
 
