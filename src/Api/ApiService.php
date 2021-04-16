@@ -70,7 +70,7 @@ class ApiService
         ]);
 
         $ch = curl_init();
-        $url ='https://oauth.z-wave.me/token';
+        $url ='https://oauth2.z-wave.me:5000/token';
 
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER,1);
