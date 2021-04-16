@@ -37,8 +37,6 @@ class ApiService
      */
     public function get(string $endpoint)
     {
-        $cookie_file_path = $this->getCookie();
-
         $url = $this->getUrl($endpoint);
 
         $ch = curl_init();
