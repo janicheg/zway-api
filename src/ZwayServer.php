@@ -106,6 +106,20 @@ class ZwayServer
 
         return $this->devices;
     }
+
+    public function getAllDevices()
+    {
+        $resource = new DevicesResource($this->api, $this->deviceSince);
+        $response = $resource->send()->getContent();
+        if ($response->code === 200) {
+            $data = $response->data;
+            foreach ($data->devices as $deviceData) {
+                $this->devices[] = $this->getDevice($deviceData);
+            }
+        }
+
+        return $this->devices;
+    }
     
     public function getApi()
     {

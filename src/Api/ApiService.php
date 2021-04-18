@@ -47,13 +47,13 @@ class ApiService
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_HTTPHEADER, [
             'Content-Type:application/json',
-            'Authentication: Bearer ' . $this->access_token
+            'Authorization: Bearer ' . $this->access_token
         ]);
         $response = curl_exec($ch);
         $code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
         $json = json_decode($response);
         if ($code == 401 || (strlen($response) > 500 && !is_object($json))) {
-            throw new \Exception('z-way auth faled');
+            throw new \Exception('z-way auth faled: ' . $response);
         }
 
         return $json;
