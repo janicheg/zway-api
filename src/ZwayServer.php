@@ -12,6 +12,7 @@ use ZWay\Devices\SwitchControl;
 use ZWay\Devices\SwitchRGB;
 use ZWay\Devices\Thermostat;
 use ZWay\Devices\ToggleButton;
+use ZWay\Devices\SwitchMultilevel;
 use ZWay\Resources\DevicesResource;
 
 class ZwayServer
@@ -74,6 +75,9 @@ class ZwayServer
                 break;
             case ToggleButton::TYPE_NAME:
                 $device = new ToggleButton($data);
+                break;
+            case SwitchMultilevel::TYPE_NAME:
+                $device = new SwitchMultilevel($data);
                 break;
             default:
                 $device = new BaseDevice($data);
