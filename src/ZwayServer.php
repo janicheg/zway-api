@@ -77,7 +77,7 @@ class ZwayServer
                 $device = new ToggleButton($data);
                 break;
             case SwitchMultilevel::TYPE_NAME:
-                $device = new SwitchMultilevel($data);
+                $device = new SwitchControl($data);
                 break;
             default:
                 $device = new BaseDevice($data);
