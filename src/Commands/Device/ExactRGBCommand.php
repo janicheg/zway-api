@@ -6,6 +6,6 @@ class ExactRGBCommand extends BaseDeviceCommand
 {
     public function set(int $red, int $green, int $blue)
     {
-        return $this->send($this->endpoint . '/exact?red=' . $red . '&greed=' . $green . '&blue=' . $blue);
+        return $this->send($this->endpoint . '/exact?red=' . $red . '&green=' . $green . '&blue=' . $blue);
     }
 }
